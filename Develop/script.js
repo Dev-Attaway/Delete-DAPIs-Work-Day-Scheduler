@@ -36,14 +36,19 @@ function saveTextToStorage(text) {
 function readEventTextFromStorage(){
   let discription = localStorage.getItem('eventDiscription');
 
+  // if something was succefully loaded in description then 
+  // JSON.parse(discription) transfroms the strings loaded from
+  //  local storage into objects
   if (discription) {
     discription = JSON.parse(discription);
-  } else {
+  } 
+  // returns an empty array if discription = falsey
+  // meaning that there was nothing in local storage to load 
+  else {
     discription = [];
   }
   return discription;
 }
-
 
 function printEventText(){
   let eventText = readEventTextFromStorage();

@@ -40,22 +40,22 @@ function saveTextToStorage(text) {
 }
 
 function readEventTextFromStorage() {
-  let discription = localStorage.getItem('eventDiscription');
+  let text = localStorage.getItem('eventDiscription');
 
   // if somebtnNumber was succefully loaded in description then 
   // JSON.parse(discription) transfroms the strings loaded from
   //  local storage into objects
-  if (description) {
-    discription = JSON.parse(discription);
+  if (text) {
+    text = JSON.parse(text);
   }
 
   // returns an empty array if description = falsey
   // meaning that there was nobtnNumber in local storage to load 
   else {
-    description = [null, null, null, null, null, null, null, null, null];
+    text = [null, null, null, null, null, null, null, null, null];
   }
 
-  return description;
+  return text;
 }
 
 function handleDeleteProject() {

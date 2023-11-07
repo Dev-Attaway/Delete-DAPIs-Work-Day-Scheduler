@@ -14,8 +14,8 @@ https://github.com/Dev-Attaway/scheduler
 
 ## Usage
 
-To be used as a model for quizzes that a developer may have to program. 
-It serves as a study tool for how JS can manipulate HTML elements.
+To be used as a model for schedules, keep in mind that you have to manually expand the elements on the index.html if you want more time slots.
+Servers as an example of powerful APIs can make your projects easier. 
 
 ## Credits
 

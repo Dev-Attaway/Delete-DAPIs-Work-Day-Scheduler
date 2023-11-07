@@ -1,39 +1,51 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-
-// GIVEN I am using a daily planner to create a schedule
-// WHEN I open the planner
-// THEN the current day is displayed at the top of the calendar
-// WHEN I scroll down
-// THEN I am presented with time blocks for standard business hours of 9am to 5pm
-// WHEN I view the time blocks for that day
-// THEN each time block is color-coded to indicate whether it is in the past, present, or future
-// WHEN I click into a time block
-// THEN I can enter an event
-// WHEN I click the save button for that time block
-// THEN the text for that event is saved in local storage
-// WHEN I refresh the page
-// THEN the saved events persist
-
-
 
 let today = dayjs();
 let timeSlot = $('.time-block');
 let userText = $('textarea');
 
 let currentHr = today.format('H');
-
+let quickTimerCtr = 12;
 
 // sets the current time and day in currentDay <p>
 $('#currentDay').text(today.format('MMM D, YYYY'));
 $('#currentTime').text(today.format('hA'));
 
+let answerResult = document.getElementById("result");
+
 function init() {
+  hideResult();
   numOfTimeSlots = timeSlot.length;
   printEventText();
   readEventTextFromStorage();
 }
+
+function fastTimer() {
+  quickTimer = setInterval(function () {
+    quickTimerCtr--;
+
+    // if quickTimerCtr is greater than 0 then show result
+    showResult();
+    console.log(quickTimer);
+
+    //  if quickTimer is less than or equal to 0 then hide the result 
+    if (quickTimerCtr <= 0) {
+      // Clears interval
+      hideResult();
+      clearInterval(quickTimer);
+    }
+    // set in Nanoseconds
+  }, 100);
+}
+
+
+function showResult() {
+  answerResult.style.display = "inherit";
+}
+
+function hideResult() {
+  answerResult.style.display = "none";
+}
+
 
 function saveTextToStorage(text) {
   localStorage.setItem('eventDiscription', JSON.stringify(text));
@@ -69,8 +81,7 @@ function printEventText() {
   // We use numOfTimeSlots since it value is grabbed on init
   let eventFromStorage = readEventTextFromStorage();
 
-  if (!eventFromStorage)
-  {
+  if (!eventFromStorage) {
     return;
   }
 
@@ -79,10 +90,7 @@ function printEventText() {
 
     // if falsey, there is nothing there
     // leave blank 
-    if(eventFromStorage[i])
-    {
-      console.log(eventFromStorage[i].eventText);
-      console.log(currentText);
+    if (eventFromStorage[i]) {
       currentText.text(eventFromStorage[i].eventText);
       // eventFromStorage[i].eventText is the object who's value of eventText
       // is what we are inputing to currentText
@@ -103,7 +111,7 @@ timeSlot.on('click', '#btn8', handleTextSubmit);
 
 function handleTextSubmit(event) {
   event.preventDefault();
-
+  fastTimer();
   eventsFromStorage = readEventTextFromStorage();
 
   let btnNumber = $(this).attr('id');
@@ -117,17 +125,15 @@ function handleTextSubmit(event) {
   // when it particular save button is pressed
   let text = $(this).prev().val();
   let trimToText = text.trim();
-  console.log("text, " + text);
-  console.log('trimToText, ' + trimToText);
 
-    let newEventText = {
-      eventText: trimToText,
-      eventTime: btnNumber
-    };
+  let newEventText = {
+    eventText: trimToText,
+    eventTime: btnNumber
+  };
 
-    console.log(eventsFromStorage);
-    eventsFromStorage[btnNumber] = newEventText;
-    saveTextToStorage(eventsFromStorage);
+  eventsFromStorage[btnNumber] = newEventText;
+  saveTextToStorage(eventsFromStorage);
+  quickTimerCtr = 12;
 
 }
 
